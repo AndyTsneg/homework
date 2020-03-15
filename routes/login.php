@@ -29,3 +29,5 @@ Route::post('/login/register/', '\Login\Controllers\RegisterAuth@execute')->midd
 
 Route::get('/login/fbauth/', '\Login\Controllers\FbAuth@execute')->middleware(Middlware::class);
 
+Route::get('/login/googleauth/', '\Login\Controllers\GoogleAuth@execute')->middleware(Middlware::class);
+

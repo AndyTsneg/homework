@@ -40,6 +40,7 @@
 
 
 <?php
+    //For FB
     $fb = new Facebook\Facebook([
         'app_id' => $_ENV['FB_APP_ID'],
         'app_secret' => $_ENV['FB_APP_SECRET'],
@@ -47,7 +48,27 @@
     ]);
     $helper = $fb->getRedirectLoginHelper();
     $permissions = ['email']; // Optional permissions
-    $loginUrl = $helper->getLoginUrl('https://homework.com.tw/login/fbauth/', $permissions);
+    $loginUrl = $helper->getLoginUrl($_ENV['FB_AUTH_URL'], $permissions);
     echo '<br>';
     echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a>';
 ?>
+
+
+<?php
+    //For GOOOGLE
+    $client = new Google_Client;
+    $client->setClientId($_ENV['GOOGLE_APP_ID']);
+    $client->setClientSecret($_ENV['GOOGLE_APP_Secret']);
+
+
+    $client->revokeToken();
+
+    // 添加授權範圍，參考 https://developers.google.com/identity/protocols/googlescopes
+    $client->addScope(['https://www.googleapis.com/auth/userinfo.profile']);
+    $client->setRedirectUri($_ENV['GOOGLE_AUTH_URL']);
+    $url = $client->createAuthUrl();
+    //    header("Location:{$url}");
+    echo '<br>';
+    echo '<a href="'.$url.'">Log in with Google!</a>';
+
+ ?>

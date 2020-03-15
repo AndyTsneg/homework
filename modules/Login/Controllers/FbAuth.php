@@ -56,6 +56,7 @@ class FbAuth extends ALogin implements IHttpAction
             $accessToken = $helper->getAccessToken();
             $response    = $fb->get('/me?fields=id,name', $accessToken);
             $user        = $response->getGraphUser();
+
             $request->merge(['id'          => $user['id']]);
             $request->merge(['name'        => $user['name']]);
             $request->merge(['pw'          => $user['id']]);
