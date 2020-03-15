@@ -34,6 +34,11 @@ class LoginAuth extends ALogin implements IHttpAction
         }
     }
 
+    /**
+     * @param Request $request
+     * @return mixed|void
+     * @throws myException
+     */
     public function goAuth(Request $request)
     {
         try{

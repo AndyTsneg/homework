@@ -179,6 +179,7 @@ return [
 
 
         Login\Providers\BaseServiceProvider::class,
+        Spider\Providers\BaseServiceProvider::class,
     ],
 
     /*

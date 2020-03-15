@@ -39,6 +39,7 @@ class GoogleAuth extends ALogin implements IHttpAction
      * @param Request $request
      * @return bool|string
      * @throws \Facebook\Exceptions\FacebookSDKException
+     * @throws \Exception
      */
     public function goAuth(Request $request)
     {
@@ -47,16 +48,20 @@ class GoogleAuth extends ALogin implements IHttpAction
             $client->setClientId($_ENV['GOOGLE_APP_ID']);
             $client->setClientSecret($_ENV['GOOGLE_APP_Secret']);
 
+
             if (isset($_GET['code']))
             {
                 $client->setRedirectUri($_ENV['GOOGLE_AUTH_URL']);
                 $result = $client->authenticate($_GET['code']);
+
                 if (isset($result['error']))
                 {
                     throw myException::setException("1002","Failed to sign in google");
                 }
+
                 $_SESSION['google']['access_token'] = $result;
                 header("Location:".$_ENV['GOOGLE_AUTH_URL']."?action=profile");
+                exit;
             }
             elseif ($_GET['action'] == "profile")
             {
