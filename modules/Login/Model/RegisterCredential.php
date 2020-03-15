@@ -11,16 +11,16 @@ class RegisterCredential implements IRegisterCredential
     var $id;
     var $pw;
     var $name;
-
+    var $socialType;
     public function __construct(Request $request){
         try {
             $this->checkEachField($request);
             $this->checkTwicePassword($request);
-            $this->checkUserExist($request);
 
             $this->id   = $request->input('id');
             $this->pw   = md5($request->input('pw'));
             $this->name = $request->input('name');
+            $this->socialType = $request->input('social_type');
         }catch(myException $ex){
             $code = $ex->getCode();
             $mess = $ex->getMessage();
@@ -60,17 +60,5 @@ class RegisterCredential implements IRegisterCredential
             throw myException::setException('1005','Please check password are same');
         }
     }
-
-    /**
-     * Checking whether id exists
-     * @param Request $request
-     * @throws myException
-     */
-    public function checkUserExist(Request $request){
-        $signIn = new Account();
-        $signIn->checkUserExist($request->get("id"));
-    }
-
-
 
 }

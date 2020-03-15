@@ -10,6 +10,7 @@ use Login\Services\Account;
 use Login\Model\RegisterCredential;
 use Login\Helper\MessageHandle;
 
+
 class RegisterAuth extends ALogin implements IHttpAction
 {
     /**
@@ -20,13 +21,14 @@ class RegisterAuth extends ALogin implements IHttpAction
     public function execute(Request $request)
     {
         try {
-            $messKey = '';
-            $userInfo       = new RegisterCredential($request);
-            $signIn = new Account();
-
+            $this    -> goAuth($request);
+            $signIn   = new Account();
+            $userInfo = new RegisterCredential($request);
             if($signIn->goRegister($userInfo)){
                 $messKey = MessageHandle::put("Successfully");
                 return redirect('/login/?mess='.$messKey);
+            }else{
+                throw myException::setException("9999","Unknown issue");
             }
 
         }catch(myException $ex){
@@ -34,6 +36,14 @@ class RegisterAuth extends ALogin implements IHttpAction
             return redirect('/login/register?mess='.$messKey);
         }catch(\Exception $ex){
             echo $ex->getMessage();
+        }
+    }
+
+    public function goAuth(Request $request)
+    {
+        $signIn = new Account();
+        if($signIn->checkUserExist($request->get("id"))){
+            throw myException::setException("1003","Duplicate user id. Please try again");
         }
     }
 }

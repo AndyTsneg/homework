@@ -18,4 +18,8 @@ class Member extends Model
      * @var array|string
      */
     private $password;
+    /**
+     * @var array|string
+     */
+    private $social_type;
 }

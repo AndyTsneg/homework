@@ -16,31 +16,32 @@ class Account  implements IAccount
      *
      * @param LoginCredential $userInfo
      * @return string
-     * @throws myException
      */
-    public function goSignIn(LoginCredential $userInfo):string
+    public function goSignIn(LoginCredential $userInfo):bool
     {
         $users = Member::whereRaw('user_id = :id and password = :pw', [":id" => $userInfo->id, ":pw" => $userInfo->pw])->get();
         if (count($users)>0){
-            $this->writeToSession($users[0]->user_id);
-            return $users[0]->user_id;
+            $this->writeToSession($users[0]->user_id,$users[0]->name);
+            return true;
         }else{
-            throw myException::setException("1002","ID or PW is wrong");
+            return false;
         }
+        return false;
     }
 
     /**
      * Obviously just checking whether user exists
      *
      * @param $userId
-     * @throws myException
+     * @return bool
      */
-    public function checkUserExist($userId)
+    public function checkUserExist($userId):bool
     {
         $users = Member::whereRaw('user_id = :id', [":id" => $userId])->get();
         if (count($users)>0){
-            throw myException::setException("1003","Duplicate user id. Please try again");
+            return true;
         }
+        return false;
     }
 
     /**
@@ -54,9 +55,10 @@ class Account  implements IAccount
     {
         try{
             $member = new Member;
-            $member->user_id    = $userInfo->id;
-            $member->password   = $userInfo->pw;
-            $member->name       = $userInfo->name;
+            $member->user_id     = $userInfo->id;
+            $member->password    = $userInfo->pw;
+            $member->name        = $userInfo->name;
+            $member->social_type = $userInfo->socialType;
             $member->save();
             return true;
         }
@@ -64,6 +66,7 @@ class Account  implements IAccount
         {
             throw myException::setException("500","db error:".$ex->getMessage());
         }
+        return false;
     }
 
 
@@ -71,11 +74,13 @@ class Account  implements IAccount
      * After user sign in, need to put user data to session
      *
      * @param $userId
+     * @param $userName
      * @return bool
      */
-    public function writeToSession($userId):bool
+    public function writeToSession($userId,$userName):bool
     {
-        //Should store to session
+        $_SESSION['user_id']   = $userId;
+        $_SESSION['user_name'] = $userName;
         return true;
     }
 }

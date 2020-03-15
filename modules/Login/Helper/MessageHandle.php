@@ -3,7 +3,6 @@
 namespace Login\Helper;
 
 use Login\Model\Message;
-use Login\Helper\AMessageHandle;
 use Illuminate\Support\Str;
 use Cache;
 
@@ -18,7 +17,7 @@ class MessageHandle extends AMessageHandle
     public static function put($value):string
     {
         $key = Str::random(32);
-        Cache::store('file')->put($key,$value, 60);
+        $_SESSION[$key] = $value;
         return $key;
     }
 
@@ -31,8 +30,8 @@ class MessageHandle extends AMessageHandle
     public static function get($key):string
     {
         $value = '';
-        if (Cache::has($key)) {
-            $value = Cache::store('file')->get($key);
+        if(isset( $_SESSION[$key])){
+            $value = $_SESSION[$key];
             self::del($key);
         }
         return $value;
@@ -46,7 +45,7 @@ class MessageHandle extends AMessageHandle
      */
     public static function del($key):bool
     {
-        Cache::forget($key);
+        unset($_SESSION[$key]);
        return true;
 
     }

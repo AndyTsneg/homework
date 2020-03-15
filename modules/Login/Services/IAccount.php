@@ -10,8 +10,8 @@ use Login\Model\RegisterCredential;
      */
 interface IAccount
 {
-    public function goSignIn(LoginCredential $userInfo);
-    public function writeToSession($userId);
-    public function goRegister(RegisterCredential $userInfo);
-    public function checkUserExist($userId);
+    public function goSignIn(LoginCredential $userInfo):bool ;
+    public function writeToSession($userId,$userName):bool;
+    public function goRegister(RegisterCredential $userInfo):bool;
+    public function checkUserExist($userId):bool;
 }

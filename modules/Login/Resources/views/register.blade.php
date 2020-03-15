@@ -29,7 +29,7 @@
         Confirm PW:<input type="password" name="confirm_pw"><br>
         Name:<input type="text" name="name"><br>
         <input type="submit" name="go" value="submit">
-        <input type="button" onclick="goIndex()" value="Sign Up">
+        <input type="button" onclick="goIndex()" value="Back">
     </form>
 </div>
 </body>

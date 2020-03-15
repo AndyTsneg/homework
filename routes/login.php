@@ -26,3 +26,6 @@ Route::post('/login/', '\Login\Controllers\LoginAuth@execute')->middleware(Middl
 Route::get('/login/register/', '\Login\Controllers\Register@execute')->middleware(Middlware::class);
 
 Route::post('/login/register/', '\Login\Controllers\RegisterAuth@execute')->middleware(Middlware::class);
+
+Route::get('/login/fbauth/', '\Login\Controllers\FbAuth@execute')->middleware(Middlware::class);
+

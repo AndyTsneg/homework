@@ -25,12 +25,5 @@ interface IRegisterCredential
      */
     public function checkTwicePassword(Request $request);
 
-    /**
-     * check user exists
-     *
-     * @param Request $request
-     * @return mixed
-     */
-    public function checkUserExist(Request $request);
 
 }

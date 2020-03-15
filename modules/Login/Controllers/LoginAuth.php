@@ -20,18 +20,30 @@ class LoginAuth extends ALogin implements IHttpAction
     public function execute(Request $request)
     {
         try {
-            $userInfo  = new LoginCredential($request);
-            $signIn    = new Account();
-            $userId    = $signIn->goSignIn($userInfo);
+            $this->goAuth($request); // Go get authorized
 
             //It means it sign in successfully.
-            echo "Hi, ".$userId.". Welcome to back<br>";
+            echo "Hi, ".$_SESSION['user_name'].". Welcome to back<br>";
             echo '<a href="./">back</a>';
+
         }catch(myException $ex){
             $messKey = MessageHandle::put($ex->getMessage());
             return redirect('/login/?mess='.$messKey);
         }catch(\Exception $ex){
             echo $ex->getMessage();
+        }
+    }
+
+    public function goAuth(Request $request)
+    {
+        try{
+            $userInfo  = new LoginCredential($request);
+            $signIn    = new Account();
+            if(!$signIn->goSignIn($userInfo)){
+                throw myException::setException("1002","ID or PW is wrong");
+            }
+        }catch(\Exception $ex){
+            throw myException::setException($ex->getCode(),$ex->getMessage());
         }
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Login\Helper\MessageHandle;
 use View;
 
-class Login extends ALogin implements IHttpAction
+class Login extends base implements IHttpAction
 {
     /**
      * Enter point for sign in
